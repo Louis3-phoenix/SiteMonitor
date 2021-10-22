@@ -50,6 +50,12 @@ func leComando() int {
 func iniciarMonitoramento() {
 	fmt.Println("Monitorando...")
 	site := "https://ge.globo.com"
-	http.Get(site)
+	resp, _ := http.Get(site)
+
+	if resp.StatusCode == 200 {
+		fmt.Println("Site:", site, "carregado com sucesso!")
+	} else {
+		fmt.Println("Site:", site, "apresenta problemas.Status Code", resp.StatusCode)
+	}
 
 }
