@@ -49,14 +49,15 @@ func leComando() int {
 func iniciarMonitoramento() {
 	fmt.Println("Monitorando...")
 
-	var sites [4]string
-	sites[0] = "https://ge.globo.com"
-	sites[1] = "https://ge.globo.com/esports/"
-	sites[2] = "https://www.globo.com/"
+	sites := []string{"https://ge.globo.com", "https://ge.globo.com/esports/", "https://www.globo.com/"}
 
-	fmt.Println(sites)
-
-	site := "https://ge.globo.com"
+	for i, site := range sites {
+		fmt.Println("Testando", i, "site:", site)
+		testaSite(site)
+	}
+	fmt.Println("")
+}
+func testaSite(site string) {
 	resp, _ := http.Get(site)
 
 	if resp.StatusCode == 200 {
@@ -64,5 +65,4 @@ func iniciarMonitoramento() {
 	} else {
 		fmt.Println("Site:", site, "apresenta problemas.Status Code", resp.StatusCode)
 	}
-
 }
