@@ -51,9 +51,12 @@ func iniciarMonitoramento() {
 
 	sites := []string{"https://ge.globo.com", "https://ge.globo.com/esports/", "https://www.globo.com/"}
 
-	for i, site := range sites {
-		fmt.Println("Testando", i, "site:", site)
-		testaSite(site)
+	for i := 0; i < 5; i++ {
+		for i, site := range sites {
+			fmt.Println("Testando", i, "site:", site)
+			testaSite(site)
+		}
+		fmt.Println("")
 	}
 	fmt.Println("")
 }
