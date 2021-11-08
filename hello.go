@@ -12,6 +12,7 @@ const delay = 5
 
 func main() {
 	exibeIntroducao()
+	leSitesDoArquivo()
 
 	for {
 		exibeMenu()
@@ -32,17 +33,20 @@ func main() {
 	}
 
 }
+
 func exibeIntroducao() {
 	nome := "Louise"
 	versao := 1.1
 	fmt.Println("Olá, sr(a).", nome)
 	fmt.Println("Este programa está na versão", versao)
 }
+
 func exibeMenu() {
 	fmt.Println("1- Iniciar Monitoramento")
 	fmt.Println("2- Exibir Logs")
 	fmt.Println("0- Sair do Programa")
 }
+
 func leComando() int {
 	var comandoLido int
 	fmt.Scan(&comandoLido)
@@ -50,6 +54,7 @@ func leComando() int {
 
 	return comandoLido
 }
+
 func iniciarMonitoramento() {
 	fmt.Println("Monitorando...")
 
@@ -65,6 +70,7 @@ func iniciarMonitoramento() {
 	}
 	fmt.Println("")
 }
+
 func testaSite(site string) {
 	resp, _ := http.Get(site)
 
@@ -73,4 +79,13 @@ func testaSite(site string) {
 	} else {
 		fmt.Println("Site:", site, "apresenta problemas.Status Code", resp.StatusCode)
 	}
+}
+
+func leSitesDoArquivo() []string {
+
+	var sites []string
+
+	arquivo, _ := os.Open("sites.txt")
+	fmt.Println(arquivo)
+	return sites
 }
