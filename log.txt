@@ -1,0 +1,6 @@
+09/11/2021 17:17:30 - https://www.globo.com/ - online: true
+09/11/2021 17:17:31 - https://ge.globo.com - online: true
+09/11/2021 17:17:34 - https://ge.globo.com/esports/ - online: true
+09/11/2021 17:17:39 - https://www.globo.com/ - online: true
+09/11/2021 17:17:39 - https://ge.globo.com - online: true
+09/11/2021 17:17:39 - https://ge.globo.com/esports/ - online: true

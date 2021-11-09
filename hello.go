@@ -6,28 +6,30 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
 
-const monitoramentos = 4
+const monitoramentos = 2
 const delay = 5
 
 func main() {
 	exibeIntroducao()
-	leSitesDoArquivo()
 
 	for {
 		exibeMenu()
+
 		comando := leComando()
 
 		switch comando {
 		case 1:
 			iniciarMonitoramento()
 		case 2:
-			fmt.Println("Exibindo Logs..")
+			fmt.Println("Exibindo Logs...")
+
 		case 0:
-			fmt.Println("Saindo do Programa...")
+			fmt.Println("Saindo do programa")
 			os.Exit(0)
 		default:
 			fmt.Println("Não conheço este comando")
@@ -39,8 +41,8 @@ func main() {
 
 func exibeIntroducao() {
 	nome := "Louise"
-	versao := 1.1
-	fmt.Println("Olá, sr(a).", nome)
+	versao := 1.2
+	fmt.Println("Olá, sra.", nome)
 	fmt.Println("Este programa está na versão", versao)
 }
 
@@ -54,23 +56,24 @@ func leComando() int {
 	var comandoLido int
 	fmt.Scan(&comandoLido)
 	fmt.Println("O comando escolhido foi", comandoLido)
+	fmt.Println("")
 
 	return comandoLido
 }
 
 func iniciarMonitoramento() {
 	fmt.Println("Monitorando...")
-
-	sites := []string{"https://ge.globo.com", "https://ge.globo.com/esports/", "https://www.globo.com/"}
+	sites := leSitesDoArquivo()
 
 	for i := 0; i < monitoramentos; i++ {
 		for i, site := range sites {
-			fmt.Println("Testando", i, "site:", site)
+			fmt.Println("Testando site", i, ":", site)
 			testaSite(site)
 		}
 		time.Sleep(delay * time.Second)
 		fmt.Println("")
 	}
+
 	fmt.Println("")
 }
 
@@ -78,30 +81,27 @@ func testaSite(site string) {
 	resp, err := http.Get(site)
 
 	if err != nil {
-
-		fmt.Println("Ocorreu um erro!", err)
+		fmt.Println("Ocorreu um erro:", err)
 	}
 
 	if resp.StatusCode == 200 {
-		fmt.Println("Site:", site, "carregado com sucesso!")
+		fmt.Println("Site:", site, "foi carregado com sucesso!")
+		registraLog(site, true)
 	} else {
-		fmt.Println("Site:", site, "apresenta problemas.Status Code", resp.StatusCode)
+		fmt.Println("Site:", site, "esta com problemas. Status Code:", resp.StatusCode)
+		registraLog(site, false)
 	}
 }
 
 func leSitesDoArquivo() []string {
-
 	var sites []string
 	arquivo, err := os.Open("sites.txt")
 
 	if err != nil {
-
-		fmt.Println("Ocorreu um erro!", err)
-
+		fmt.Println("Ocorreu um erro:", err)
 	}
 
 	leitor := bufio.NewReader(arquivo)
-
 	for {
 		linha, err := leitor.ReadString('\n')
 		linha = strings.TrimSpace(linha)
@@ -114,5 +114,19 @@ func leSitesDoArquivo() []string {
 
 	}
 
+	arquivo.Close()
 	return sites
+}
+
+func registraLog(site string, status bool) {
+
+	arquivo, err := os.OpenFile("log.txt", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	arquivo.WriteString(time.Now().Format("02/01/2006 15:04:05") + " - " + site + " - online: " + strconv.FormatBool(status) + "\n")
+
+	arquivo.Close()
 }
