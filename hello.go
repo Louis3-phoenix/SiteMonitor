@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"time"
@@ -89,7 +90,8 @@ func testaSite(site string) {
 func leSitesDoArquivo() []string {
 
 	var sites []string
-	arquivo, err := os.Open("sites.txt")
+	// arquivo, err := os.Open("sites.txt")
+	arquivo, err := ioutil.ReadFile("sites.txt")
 
 	if err != nil {
 
@@ -97,7 +99,7 @@ func leSitesDoArquivo() []string {
 
 	}
 
-	fmt.Println(arquivo)
+	fmt.Println(string(arquivo))
 
 	return sites
 }
